@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestController {
 	
 	@Autowired
-	private TestMessage testMessage;
+	private TestService testService;
      
 	@RequestMapping(value = {"/Test"}) 
     public void prueba(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse) throws IOException {		
-        httpServletResponse.getWriter().println(testMessage.printMessage());
+        httpServletResponse.getWriter().println(testService.printMessage());
     }
 }

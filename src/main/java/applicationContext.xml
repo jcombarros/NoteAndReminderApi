@@ -8,6 +8,11 @@
   
     <context:annotation-config/>
     
-    <bean id="testMessage" class="es.jab.business.ws.test.TestMessage"></bean>
+    <bean id="testService" class="es.jab.business.ws.test.TestService">
+    	<property name="testJpa">
+    		<ref bean="testJpa"/>
+    	</property>
+    </bean>
+    <bean id="testJpa" class="es.jab.persistence.jpa.test.TestJpa"></bean>
      
 </beans>
