@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class TestController {
      
-	@RequestMapping(value = {"/Test"})
+	@RequestMapping(value = {"/Test"}) 
     public void prueba(HttpServletRequest httpRequest, HttpServletResponse httpServletResponse) throws IOException {		
         httpServletResponse.getWriter().println("Hello World!");
     }
