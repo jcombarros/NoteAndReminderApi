@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import es.jab.persistence.jpa.test.Message;
 import es.jab.persistence.jpa.test.TestJpa;
 
-public class TestService {
+public class TestService { 
 	
 	@Autowired
 	private TestJpa testJpa;
