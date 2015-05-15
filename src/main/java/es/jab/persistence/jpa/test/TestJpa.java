@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
-public class TestJpa {
+public class TestJpa { 
 	
 	private EntityManager em;
 	
