@@ -1,7 +1,7 @@
 package es.jab.business.ws.test;
 
 public class TestMessage {
-	
+	 
 	private String message;
 	
 	public TestMessage(){
