@@ -14,5 +14,9 @@
     	</property>
     </bean>
     <bean id="testJpa" class="es.jab.persistence.jpa.test.TestJpa"></bean>
+    
+    <bean id="noteDao" class="es.jab.persistence.dao.jpa.NoteDaoJpa"></bean>
+    
+    <bean id="jsonTransformer" class="es.jab.utils.json.gson.JsonTransformerGson"></bean>
      
 </beans>

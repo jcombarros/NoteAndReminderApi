@@ -16,7 +16,7 @@ import es.jab.persistence.dao.GenericDao;
 
 public class GenericDaoJpa<T, ID> implements GenericDao<T, ID> {
 	
-	private static final String PERSISTENCE_UNIT = "WebBasicProject";
+	private static final String PERSISTENCE_UNIT = "NoteAndReminderApi";
 
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
 	
