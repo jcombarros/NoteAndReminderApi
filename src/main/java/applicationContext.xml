@@ -16,7 +16,9 @@
     <bean id="testJpa" class="es.jab.persistence.jpa.test.TestJpa"></bean>
     
     <bean id="noteDao" class="es.jab.persistence.dao.jpa.NoteDaoJpa"></bean>
+    <bean id="userDao" class="es.jab.persistence.dao.jpa.UserDaoJpa"></bean>
     
-    <bean id="jsonTransformer" class="es.jab.utils.json.jackson.JsonTransformerImplJackson"></bean>
+    <bean id="jsonTransformer" class="es.jab.utils.json.jackson.JsonTransformerJackson"></bean>
+<!--     <bean id="jsonTransformer" class="es.jab.utils.json.gson.JsonTransformerGson"></bean> -->
      
 </beans>

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.jab.utils.json.JsonTransformer;
 
-public class JsonTransformerImplJackson implements JsonTransformer {
+public class JsonTransformerJackson implements JsonTransformer {
 
     @Override
     public String toJson(Object data) {

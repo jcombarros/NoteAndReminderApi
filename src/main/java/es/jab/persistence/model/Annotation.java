@@ -5,12 +5,13 @@ import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 public abstract class Annotation {
@@ -23,10 +24,12 @@ public abstract class Annotation {
 	
 	@ManyToOne()
 	@JoinColumn
+	@JsonIgnore
 	protected User user;
 	
 	@ManyToOne()
 	@JoinColumn
+	@JsonIgnore
 	protected Category category;
 	
 	@Temporal(TemporalType.DATE)
