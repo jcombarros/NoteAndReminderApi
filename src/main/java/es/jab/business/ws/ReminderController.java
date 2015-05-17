@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import es.jab.persistence.dao.NoteDao;
-import es.jab.persistence.model.Note;
+import es.jab.persistence.dao.ReminderDao;
+import es.jab.persistence.model.Reminder;
 import es.jab.utils.json.JsonTransformer;
 
 @Controller
-public class NoteController {
-	
+public class ReminderController {
+
 	@Autowired
 	private JsonTransformer jsonTransformer;
 	
@@ -27,17 +27,17 @@ public class NoteController {
 	}
 	
 	@Autowired
-	private NoteDao noteDao;
+	private ReminderDao reminderDao;
 	
-	public void setNoteDao(NoteDao noteDao){
-		this.noteDao = noteDao;
+	public void setReminderDao(ReminderDao reminderDao){
+		this.reminderDao = reminderDao;
 	}
 	
-	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/json")
-    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
+	@RequestMapping(value = "/Reminder/{idReminder}", method = RequestMethod.GET, produces = "application/json")
+    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idReminder") int idReminder) {
 		try {
-			Note note = noteDao.read(idNote);
-			String jsonSalida = jsonTransformer.toJson(note);
+			Reminder reminder = reminderDao.read(idReminder);
+			String jsonSalida = jsonTransformer.toJson(reminder);
 			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		    httpServletResponse.setContentType("application/json; charset=UTF-8");
 		    httpServletResponse.getWriter().println(jsonSalida);
@@ -49,12 +49,12 @@ public class NoteController {
 		}
     }
  
-    @RequestMapping(value = "/Note", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/Reminder", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
 		try {
-			Note note = (Note) jsonTransformer.fromJson(jsonEntrada, Note.class);
-			noteDao.create(note);
-			String jsonSalida = jsonTransformer.toJson(note);
+			Reminder reminder = (Reminder) jsonTransformer.fromJson(jsonEntrada, Reminder.class);
+			reminderDao.create(reminder);
+			String jsonSalida = jsonTransformer.toJson(reminder);
 			      
 			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 			httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -67,11 +67,11 @@ public class NoteController {
 
 }
 
-    @RequestMapping(value = "/Note", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/Reminder", method = RequestMethod.GET, produces = "application/json")
     public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     	try {
-		    List<Note> notes = noteDao.findAll();
-		    String jsonSalida = jsonTransformer.toJson(notes);
+		    List<Reminder> reminders = reminderDao.findAll();
+		    String jsonSalida = jsonTransformer.toJson(reminders);
 		     
 		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		    httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -82,12 +82,12 @@ public class NoteController {
 		}
     }
     
-    @RequestMapping(value = "/Note/{idNote}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idNote") int idNote) {
+    @RequestMapping(value = "/Reminder/{idReminder}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idReminder") int idReminder) {
     	try {
-    		Note note = (Note) jsonTransformer.fromJson(jsonEntrada, Note.class);
-    		noteDao.update(note);
-		    String jsonSalida = jsonTransformer.toJson(note);
+    		Reminder reminder = (Reminder) jsonTransformer.fromJson(jsonEntrada, Reminder.class);
+    		reminderDao.update(reminder);
+		    String jsonSalida = jsonTransformer.toJson(reminder);
 		     
 		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		    httpServletResponse.setContentType("application/json; charset=UTF-8");
@@ -98,10 +98,10 @@ public class NoteController {
 		}
     }
     
-    @RequestMapping(value = "/Note/{idNote}", method = RequestMethod.DELETE, produces = "application/json")
-    public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
+    @RequestMapping(value = "/Reminder/{idReminder}", method = RequestMethod.DELETE, produces = "application/json")
+    public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idReminder") int idReminder) {
     	try {
-		    noteDao.deleteById(idNote);
+    		reminderDao.deleteById(idReminder);
 		    httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		}    
 		catch (Exception ex) {
@@ -109,4 +109,5 @@ public class NoteController {
 		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
     }
+	
 }
