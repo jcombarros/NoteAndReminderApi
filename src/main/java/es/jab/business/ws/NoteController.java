@@ -14,30 +14,30 @@ public class NoteController {
 	
 	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
-		System.out.println("AQUI!");
+		System.out.println("AQUI read!");
     }
  
     @RequestMapping(value = "/Note", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
-		System.out.println("AQUI!");
+		System.out.println("AQUI insert!");
 
     }
 
     @RequestMapping(value = "/Note", method = RequestMethod.GET, produces = "application/json")
     public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-		System.out.println("AQUI!");
+		System.out.println("AQUI find!");
 
     }
     
     @RequestMapping(value = "/Note/{idNote}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idNote") int idNote) {
-		System.out.println("AQUI!");
+		System.out.println("AQUI update!");
 
     }
     
     @RequestMapping(value = "/Note/{idNote}", method = RequestMethod.DELETE, produces = "application/json")
     public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
-		System.out.println("AQUI!");
+		System.out.println("AQUI delete!");
 
     }
 }
