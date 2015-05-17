@@ -2,10 +2,7 @@ package es.jab.persistence.model;
 
 import java.util.Date;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Entity(name="NOTE")
 public class Note extends Annotation {
