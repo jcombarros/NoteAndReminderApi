@@ -2,18 +2,30 @@ package es.jab.persistence.model;
 
 import java.util.Date;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity(name="REMINDER")
 public class Reminder extends Annotation {
 
-
+	@Temporal(TemporalType.DATE)
 	private Date completionDate;
 	
 	private boolean isCompleted;
+	
+	public Reminder(){
+		this(0, "", null, new Date(), null, false);
+	}
 	
 	public Reminder(String title, User user){
 		this(0, title,user,new Date(), null, false);
 	}
 	
-	public Reminder(int id, String title, User user, Date creationDate, Date completionDate, boolean isCompleted) {
+	private Reminder(int id, String title, User user, Date creationDate, Date completionDate, boolean isCompleted) {
 		super(id, title, user, creationDate);
 		this.setCompletionDate(completionDate);
 		this.setCompleted(isCompleted);
@@ -42,6 +54,22 @@ public class Reminder extends Annotation {
 	@Override
 	public String toString(){
 		return this.id + ": " + this.title + " BY " + this.user.getName() + " " + this.user.getSurname();
+	}
+	
+	@Override
+	public void setUser(User user){
+		if(user != null){
+			user.addReminder(this);
+		}
+		
+	}
+	
+	@Override
+	public void setCategory(Category category){
+		if(category != null){
+			category.addReminder(this);
+		}
+		
 	}
 
 }

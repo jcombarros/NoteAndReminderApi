@@ -3,8 +3,18 @@ package es.jab.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity(name="USER")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
@@ -15,9 +25,15 @@ public class User {
 	
 	private String password;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Note> notes;
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Reminder> reminders;
+	
+	public User(){
+		this(0, "", "", "", "");
+	}
 	
 	public User(String name, String surname, String email, String password, String passwordAgain) throws Exception{
 		this(0, name, surname, email, password);
@@ -28,11 +44,11 @@ public class User {
 	
 	public User(int id, String name, String surname, String email, String password) {
 		super();
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.email = email;
-		this.password = password;
+		this.setId(id);
+		this.setName(name);
+		this.setSurname(surname);
+		this.setEmail(email);
+		this.setPassword(password);
 		this.setNotes(new ArrayList<Note>());
 		this.setReminders(new ArrayList<Reminder>());
 	}
@@ -41,7 +57,7 @@ public class User {
 		return id;
 	}
 
-	public void setId(int id) {
+	private void setId(int id) {
 		this.id = id;
 	}
 
@@ -86,7 +102,7 @@ public class User {
 		return notes;
 	}
 
-	public void setNotes(List<Note> notes) {
+	private void setNotes(List<Note> notes) {
 		this.notes = notes;
 	}
 
@@ -94,24 +110,40 @@ public class User {
 		return reminders;
 	}
 
-	public void setReminders(List<Reminder> reminders) {
+	private void setReminders(List<Reminder> reminders) {
 		this.reminders = reminders;
 	}
 	
-	public void addNote(Note note){
+	public void addNote(Note note) throws NullPointerException{
+		if(note == null){
+			throw new NullPointerException();
+		}
 		this.notes.add(note);
+		note.user = this;
 	}
 	
-	public void removeNote(Note note){
+	public void removeNote(Note note) throws NullPointerException{
+		if(note == null){
+			throw new NullPointerException();
+		}
+		note.user = null;
 		this.notes.remove(note);
 	}
 	
-	public void addReminder(Reminder reminder){
+	public void addReminder(Reminder reminder) throws NullPointerException{
+		if(reminder == null){
+			throw new NullPointerException();
+		}
 		this.reminders.add(reminder);
+		reminder.user = this;
 	}
 	
-	public void removeReminder(Note note){
-		this.reminders.remove(note);
+	public void removeReminder(Reminder reminder) throws NullPointerException{
+		if(reminder == null){
+			throw new NullPointerException();
+		}
+		reminder.user = null;
+		this.reminders.remove(reminder);
 	}
 
 }

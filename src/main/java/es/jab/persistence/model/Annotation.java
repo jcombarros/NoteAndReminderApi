@@ -2,29 +2,57 @@ package es.jab.persistence.model;
 
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@MappedSuperclass
 public abstract class Annotation {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	protected int id;
 	
 	protected String title;
 	
+	@ManyToOne()
+	@JoinColumn
 	protected User user;
 	
+	@ManyToOne()
+	@JoinColumn
+	protected Category category;
+	
+	@Temporal(TemporalType.DATE)
 	protected Date creationDate;
+	
+	protected Annotation() {
+		this(0, "", null, null);
+	}
 
-	public Annotation(int id, String title, User user, Date creationDate) {
+	protected Annotation(int id, String title, User user, Date creationDate) {
 		super();
-		this.id = id;
-		this.title = title;
-		this.user = user;
-		this.creationDate = creationDate;
+		this.setId(id);
+		this.setTitle(title);
+		this.setUser(user);
+		this.setCreationDate(creationDate);
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	protected void setId(int id) {
 		this.id = id;
 	}
 
@@ -40,9 +68,13 @@ public abstract class Annotation {
 		return user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public abstract void setUser(User user);
+
+	public Category getCategory() {
+		return category;
 	}
+
+	public abstract void setCategory(Category category);
 
 	public Date getCreationDate() {
 		return creationDate;
