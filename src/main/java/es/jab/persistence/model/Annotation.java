@@ -32,7 +32,7 @@ public abstract class Annotation {
 	@JsonIgnore
 	protected Category category;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	protected Date creationDate;
 	
 	protected Annotation() {

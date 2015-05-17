@@ -9,7 +9,7 @@ import javax.persistence.TemporalType;
 @Entity(name="REMINDER")
 public class Reminder extends Annotation {
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date completionDate;
 	
 	private boolean isCompleted;
