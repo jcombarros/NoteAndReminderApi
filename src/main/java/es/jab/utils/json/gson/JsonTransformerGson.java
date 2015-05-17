@@ -1,6 +1,7 @@
 package es.jab.utils.json.gson;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import es.jab.utils.json.JsonTransformer;
 
@@ -9,7 +10,7 @@ public class JsonTransformerGson implements JsonTransformer{
 	private Gson gson;
 	
 	public JsonTransformerGson() {
-		gson = new Gson();
+		gson = new GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create();
 	}
 
 	@Override
