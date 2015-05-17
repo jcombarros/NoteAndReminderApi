@@ -23,7 +23,7 @@ public class PopulateDB {
 			em = Persistence.createEntityManagerFactory("NoteAndReminderApi", properties).createEntityManager();
 		}
 		
-		public void testJpaPersistAndFind(){
+		public void populate(){
 			try {
 				User user = new User("Javier", "Combarros", "j.combarros@gmail.com", "myPass", "myPass");
 				Note note = new Note("My First Note", user, "These are my first lines...");
@@ -58,7 +58,7 @@ public class PopulateDB {
 			System.out.println("START -- populating DB");
 			
 			PopulateDB populateDB = new PopulateDB();
-			populateDB.testJpaPersistAndFind();
+			populateDB.populate();
 			
 			System.out.println("FINISH -- populating DB");
 	
