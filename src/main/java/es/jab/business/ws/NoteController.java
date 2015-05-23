@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import es.jab.persistence.dao.NoteDao;
 import es.jab.persistence.model.Note;
@@ -34,14 +33,18 @@ public class NoteController {
 		this.noteDao = noteDao;
 	}
 	
-	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/javascript")
-    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote, @RequestParam("callback") String callback) {
+	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/json")
+    public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
 		try {
 			Note note = noteDao.read(idNote);
-			String jsonSalida = jsonTransformer.toJson(note);
-			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-		    httpServletResponse.setContentType("application/json; charset=UTF-8");
-		    httpServletResponse.getWriter().println(callback + "(" +jsonSalida+ ")");
+			if(note == null){
+				httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}else{
+				String jsonSalida = jsonTransformer.toJson(note);
+				httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+			    httpServletResponse.setContentType("application/json; charset=UTF-8");
+			    httpServletResponse.getWriter().println(jsonSalida);
+			}
 		
 		} catch (Exception ex) {
 			ex.printStackTrace();
