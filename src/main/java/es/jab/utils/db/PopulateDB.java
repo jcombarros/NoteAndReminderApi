@@ -1,5 +1,6 @@
 package es.jab.utils.db;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ public class PopulateDB {
 				User user = new User("Javier", "Combarros", "j.combarros@gmail.com", "myPass", "myPass");
 				Note note = new Note("My First Note", user, "These are my first lines...");
 				Reminder reminder = new Reminder("My first Reminder", user);
+				reminder.setCompletionDate(new Date());
+				
 				Category category = new Category("My First Stuff");
 				
 				category.addNote(note);

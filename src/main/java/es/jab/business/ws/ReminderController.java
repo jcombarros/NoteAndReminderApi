@@ -102,7 +102,7 @@ public class ReminderController {
     public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idReminder") int idReminder) {
     	try {
     		reminderDao.deleteById(idReminder);
-		    httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		}    
 		catch (Exception ex) {
 			ex.printStackTrace();

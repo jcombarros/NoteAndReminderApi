@@ -106,7 +106,7 @@ public class NoteController {
     public void delete(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
     	try {
 		    noteDao.deleteById(idNote);
-		    httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 		}    
 		catch (Exception ex) {
 			ex.printStackTrace();
