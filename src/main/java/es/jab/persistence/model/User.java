@@ -25,6 +25,8 @@ public class User {
 	
 	private String password;
 	
+	private String token;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Note> notes;
 	
@@ -51,6 +53,7 @@ public class User {
 		this.setPassword(password);
 		this.setNotes(new ArrayList<Note>());
 		this.setReminders(new ArrayList<Reminder>());
+		this.setToken("");
 	}
 
 	public int getId() {
@@ -144,6 +147,14 @@ public class User {
 		}
 		reminder.user = null;
 		this.reminders.remove(reminder);
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
