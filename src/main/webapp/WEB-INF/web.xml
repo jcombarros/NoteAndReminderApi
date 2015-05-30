@@ -25,4 +25,23 @@
         <servlet-name>dispatcher</servlet-name> 
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+    
+    <filter>
+	    <filter-name>filter</filter-name>
+	    <filter-class>es.jab.business.filter.TokenFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>filter</filter-name>
+	    <servlet-name>dispatcher</servlet-name> 
+	</filter-mapping>
+	
+	<servlet>
+        <servlet-name>authDispatcher</servlet-name> 
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup> 
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>authDispatcher</servlet-name> 
+        <url-pattern>/auth/*</url-pattern>
+    </servlet-mapping>
 </web-app>
