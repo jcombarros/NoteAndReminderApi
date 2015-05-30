@@ -14,7 +14,7 @@ public class TestJpa {
 	
 	public TestJpa(){
 		Map<String, String> properties = new HashMap<>();
-		properties.put(PersistenceUnitProperties.DDL_GENERATION, PersistenceUnitProperties.DROP_AND_CREATE);
+		//properties.put(PersistenceUnitProperties.DDL_GENERATION, PersistenceUnitProperties.DROP_AND_CREATE);
 		em = Persistence.createEntityManagerFactory("NoteAndReminderApi", properties).createEntityManager();
 	}
 	
