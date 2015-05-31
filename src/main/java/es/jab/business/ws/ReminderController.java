@@ -22,16 +22,8 @@ public class ReminderController {
 	@Autowired
 	private JsonTransformer jsonTransformer;
 	
-	public void setJsonTransformer(JsonTransformer jsonTransformer){
-		this.jsonTransformer = jsonTransformer;
-	}
-	
 	@Autowired
 	private ReminderDao reminderDao;
-	
-	public void setReminderDao(ReminderDao reminderDao){
-		this.reminderDao = reminderDao;
-	}
 	
 	@RequestMapping(value = "/Reminder/{idReminder}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idReminder") int idReminder) {

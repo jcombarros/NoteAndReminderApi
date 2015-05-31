@@ -22,5 +22,10 @@
     
     <bean id="jsonTransformer" class="es.jab.utils.json.jackson.JsonTransformerJackson"></bean>
 <!--     <bean id="jsonTransformer" class="es.jab.utils.json.gson.JsonTransformerGson"></bean> -->
+
+	<bean id="tokenValidator" class="es.jab.business.filter.TokenValidator"></bean>
+
+	<bean id="tokenFilter" class="es.jab.business.filter.TokenFilter">
+    </bean>
      
 </beans>

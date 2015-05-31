@@ -20,17 +20,9 @@ import es.jab.utils.json.JsonTransformer;
 public class CategoryController {
 	@Autowired
 	private JsonTransformer jsonTransformer;
-	
-	public void setJsonTransformer(JsonTransformer jsonTransformer){
-		this.jsonTransformer = jsonTransformer;
-	}
-	
+
 	@Autowired
 	private CategoryDao categoryDao;
-	
-	public void setCategoryDao(CategoryDao categoryDao){
-		this.categoryDao = categoryDao;
-	}
 	
 	@RequestMapping(value = "/Category/{idCategory}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idCategory") int idCategory) {

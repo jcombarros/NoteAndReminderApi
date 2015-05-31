@@ -1,9 +1,5 @@
 package es.jab.business.ws;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-
 import java.security.Key;
 import java.util.List;
 
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import es.jab.persistence.dao.UserDao;
-import es.jab.persistence.model.Token;
 import es.jab.persistence.model.User;
 import es.jab.utils.json.JsonTransformer;
 
@@ -28,16 +23,8 @@ public class UserController {
 	@Autowired
 	private JsonTransformer jsonTransformer;
 	
-	public void setJsonTransformer(JsonTransformer jsonTransformer){
-		this.jsonTransformer = jsonTransformer;
-	}
-	
 	@Autowired
 	private UserDao userDao;
-	
-	public void setUserDao(UserDao userDao){
-		this.userDao = userDao;
-	}
 	
 	@RequestMapping(value = "/User/{idUser}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idUser") int idUser) {

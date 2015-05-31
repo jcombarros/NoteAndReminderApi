@@ -27,11 +27,11 @@
     </servlet-mapping>
     
     <filter>
-	    <filter-name>filter</filter-name>
-	    <filter-class>es.jab.business.filter.TokenFilter</filter-class>
+	    <filter-name>tokenFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
-	    <filter-name>filter</filter-name>
+	    <filter-name>tokenFilter</filter-name>
 	    <servlet-name>dispatcher</servlet-name> 
 	</filter-mapping>
 	

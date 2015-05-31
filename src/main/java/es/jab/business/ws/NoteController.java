@@ -23,16 +23,8 @@ public class NoteController {
 	@Autowired
 	private JsonTransformer jsonTransformer;
 	
-	public void setJsonTransformer(JsonTransformer jsonTransformer){
-		this.jsonTransformer = jsonTransformer;
-	}
-	
 	@Autowired
 	private NoteDao noteDao;
-	
-	public void setNoteDao(NoteDao noteDao){
-		this.noteDao = noteDao;
-	}
 	
 	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {

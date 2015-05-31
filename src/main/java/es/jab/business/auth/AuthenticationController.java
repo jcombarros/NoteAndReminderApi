@@ -2,9 +2,6 @@ package es.jab.business.auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-
-import java.security.Key;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import es.jab.business.filter.TokenValidator;
 import es.jab.persistence.dao.UserDao;
 import es.jab.persistence.model.Token;
 import es.jab.persistence.model.User;
@@ -24,18 +22,13 @@ import es.jab.utils.json.JsonTransformer;
 public class AuthenticationController {
 	
 	@Autowired
-	private JsonTransformer jsonTransformer;
+	private TokenValidator tokenValidator;
 	
-	public void setJsonTransformer(JsonTransformer jsonTransformer){
-		this.jsonTransformer = jsonTransformer;
-	}
+	@Autowired
+	private JsonTransformer jsonTransformer;
 	
 	@Autowired
 	private UserDao userDao;
-	
-	public void setUserDao(UserDao userDao){
-		this.userDao = userDao;
-	}
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public void authenticate(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
@@ -47,8 +40,7 @@ public class AuthenticationController {
 				User user = userDao.getUserByEmail(token.getEmail());
 				if(user != null && user.getPassword().equals(token.getPassword())){
 					
-					Key key = MacProvider.generateKey();
-					String signature = Jwts.builder().setSubject(token.getEmail()).signWith(SignatureAlgorithm.HS512, key).compact();
+					String signature = tokenValidator.sign(jsonEntrada);
 					
 					user.setToken(signature);
 					userDao.update(user);
@@ -72,8 +64,6 @@ public class AuthenticationController {
 				httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 			
-		    
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
