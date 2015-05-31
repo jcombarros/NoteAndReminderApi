@@ -76,5 +76,13 @@ public class Token {
 		this.setMessage(message);
 		this.setPassword("");
 	}
+	
+	public void disable(){
+		this.setAuth(false);
+		this.setMessage("");
+		this.setEmail("");
+		this.setPassword("");
+		this.setToken("");
+	}
 
 }

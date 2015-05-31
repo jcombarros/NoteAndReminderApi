@@ -70,5 +70,70 @@ public class AuthenticationController {
 		}
 
     }
+	
+	@RequestMapping(value = "/createUser", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public void createUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+		try {
+			User user = (User) jsonTransformer.fromJson(jsonEntrada, User.class);
+			
+			Token token = new Token();
+			token.setEmail(user.getEmail());
+			token.setPassword(user.getPassword());
+			
+			String signature = tokenValidator.sign(jsonTransformer.toJson(token));	
+			user.setToken(signature);
+			
+			userDao.create(user);
+			token.authorize(signature);
+			
+			String jsonSalida = jsonTransformer.toJson(token);
+			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+			httpServletResponse.setContentType("application/json; charset=UTF-8");
+		    httpServletResponse.getWriter().println(jsonSalida);
+
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+
+    }
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
+		try {
+			Token token = (Token) jsonTransformer.fromJson(jsonEntrada, Token.class);
+			boolean loggedOut = false;
+			if(token != null && token.getToken() != null){
+				String subject = tokenValidator.validate(token.getToken());
+				Token subjectToken = (Token) jsonTransformer.fromJson(subject, Token.class);
+				
+				User user = userDao.getUserByEmail(subjectToken.getEmail());
+				if(user != null && user.getPassword().equals(subjectToken.getPassword())){
+					
+					user.setToken("");
+					userDao.update(user);
+					
+					token.disable();
+					loggedOut = true;
+				}
+			}
+			String jsonSalida = jsonTransformer.toJson(token);
+
+			if(loggedOut){	
+				httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+				httpServletResponse.setContentType("application/json; charset=UTF-8");
+				httpServletResponse.getWriter().println(jsonSalida);
+			}
+			else{
+				httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+
+    }
 
 }
