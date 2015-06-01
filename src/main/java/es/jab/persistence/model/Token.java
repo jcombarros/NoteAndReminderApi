@@ -4,6 +4,8 @@ public class Token {
 	
 	private boolean auth;
 	
+	private int userId;
+	
 	private String email;
 	
 	private String password;
@@ -16,9 +18,10 @@ public class Token {
 		super();
 	}
 
-	public Token(boolean auth, String email, String password, String token, String message) {
+	public Token(boolean auth, int userId, String email, String password, String token, String message) {
 		super();
 		this.auth = auth;
+		this.userId = userId;
 		this.email = email;
 		this.password = password;
 		this.token = token;
@@ -31,6 +34,14 @@ public class Token {
 
 	public void setAuth(boolean auth) {
 		this.auth = auth;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getEmail() {
@@ -65,21 +76,24 @@ public class Token {
 		this.message = message;
 	}
 	
-	public void authorize(String signature){
+	public void authorize(int userId, String signature){
 		this.setAuth(true);
 		this.setToken(signature);
+		this.setUserId(userId);
 		this.setPassword("");
 	}
 	
 	public void deny(String message){
 		this.setAuth(false);
 		this.setMessage(message);
+		this.setUserId(0);
 		this.setPassword("");
 	}
 	
 	public void disable(){
 		this.setAuth(false);
 		this.setMessage("");
+		this.setUserId(0);
 		this.setEmail("");
 		this.setPassword("");
 		this.setToken("");

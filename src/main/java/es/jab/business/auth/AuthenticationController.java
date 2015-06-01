@@ -45,7 +45,7 @@ public class AuthenticationController {
 					user.setToken(signature);
 					userDao.update(user);
 					
-					token.authorize(signature);
+					token.authorize(user.getId(), signature);
 					authorized = true;
 				}
 				else{
@@ -84,7 +84,7 @@ public class AuthenticationController {
 			user.setToken(signature);
 			
 			userDao.create(user);
-			token.authorize(signature);
+			token.authorize(user.getId(), signature);
 			
 			String jsonSalida = jsonTransformer.toJson(token);
 			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
