@@ -94,6 +94,7 @@ public class NoteController {
     public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idNote") int idNote) {
     	try {
     		Note note = (Note) jsonTransformer.fromJson(jsonEntrada, Note.class);
+    		note.setUser(getUserFromRequest(httpServletRequest));
     		noteDao.update(note);
 		    String jsonSalida = jsonTransformer.toJson(note);
 		     

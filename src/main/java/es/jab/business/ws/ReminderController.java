@@ -89,6 +89,7 @@ public class ReminderController {
     public void update(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada, @PathVariable("idReminder") int idReminder) {
     	try {
     		Reminder reminder = (Reminder) jsonTransformer.fromJson(jsonEntrada, Reminder.class);
+    		reminder.setUser(getUserFromRequest(httpServletRequest));
     		reminderDao.update(reminder);
 		    String jsonSalida = jsonTransformer.toJson(reminder);
 		     
