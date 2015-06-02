@@ -2,6 +2,7 @@ package es.jab.business.ws;
 
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import es.jab.business.filter.TokenValidator;
 import es.jab.persistence.dao.NoteDao;
+import es.jab.persistence.dao.UserDao;
 import es.jab.persistence.model.Note;
+import es.jab.persistence.model.Token;
+import es.jab.persistence.model.User;
 import es.jab.utils.json.JsonTransformer;
 
 @Controller
@@ -25,6 +29,12 @@ public class NoteController {
 	
 	@Autowired
 	private NoteDao noteDao;
+	
+	@Autowired
+	private TokenValidator tokenValidator;
+	
+	@Autowired
+	private UserDao userDao;
 	
 	@RequestMapping(value = "/Note/{idNote}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idNote") int idNote) {
@@ -50,6 +60,7 @@ public class NoteController {
     public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
 		try {
 			Note note = (Note) jsonTransformer.fromJson(jsonEntrada, Note.class);
+			note.setUser(getUserFromRequest(httpServletRequest));
 			noteDao.create(note);
 			String jsonSalida = jsonTransformer.toJson(note);
 			      
@@ -64,10 +75,10 @@ public class NoteController {
 
 }
 
-    @RequestMapping(value = "/Note", method = RequestMethod.GET, produces = "application/json")
-    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    @RequestMapping(value = "/Note/userId={userId}", method = RequestMethod.GET, produces = "application/json")
+    public void findByUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("userId") int userId) {
     	try {
-		    List<Note> notes = noteDao.findAll();
+		    List<Note> notes = noteDao.getByUser(userId);
 		    String jsonSalida = jsonTransformer.toJson(notes);
 		     
 		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -105,5 +116,12 @@ public class NoteController {
 			ex.printStackTrace();
 		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+    }
+    
+    private User getUserFromRequest(HttpServletRequest request){
+    	String authorizationHeader =  request.getHeader("Authorization");
+        String subject = tokenValidator.validate(authorizationHeader);
+        Token token = (Token) jsonTransformer.fromJson(subject, Token.class);
+        return userDao.getUserByEmail(token.getEmail());
     }
 }

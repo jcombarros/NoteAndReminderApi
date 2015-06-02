@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import es.jab.business.filter.TokenValidator;
 import es.jab.persistence.dao.ReminderDao;
+import es.jab.persistence.dao.UserDao;
 import es.jab.persistence.model.Reminder;
+import es.jab.persistence.model.Token;
+import es.jab.persistence.model.User;
 import es.jab.utils.json.JsonTransformer;
 
 @Controller
@@ -24,6 +28,12 @@ public class ReminderController {
 	
 	@Autowired
 	private ReminderDao reminderDao;
+	
+	@Autowired
+	private TokenValidator tokenValidator;
+	
+	@Autowired
+	private UserDao userDao;
 	
 	@RequestMapping(value = "/Reminder/{idReminder}", method = RequestMethod.GET, produces = "application/json")
     public void read(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("idReminder") int idReminder) {
@@ -45,6 +55,7 @@ public class ReminderController {
     public void insert(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @RequestBody String jsonEntrada) {
 		try {
 			Reminder reminder = (Reminder) jsonTransformer.fromJson(jsonEntrada, Reminder.class);
+			reminder.setUser(getUserFromRequest(httpServletRequest));
 			reminderDao.create(reminder);
 			String jsonSalida = jsonTransformer.toJson(reminder);
 			      
@@ -59,10 +70,10 @@ public class ReminderController {
 
 }
 
-    @RequestMapping(value = "/Reminder", method = RequestMethod.GET, produces = "application/json")
-    public void find(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    @RequestMapping(value = "/Reminder/userId={userId}", method = RequestMethod.GET, produces = "application/json")
+    public void findByUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, @PathVariable("userId") int userId) {
     	try {
-		    List<Reminder> reminders = reminderDao.findAll();
+		    List<Reminder> reminders = reminderDao.getByUser(userId);
 		    String jsonSalida = jsonTransformer.toJson(reminders);
 		     
 		    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -100,6 +111,13 @@ public class ReminderController {
 			ex.printStackTrace();
 		    httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+    }
+    
+    private User getUserFromRequest(HttpServletRequest request){
+    	String authorizationHeader =  request.getHeader("Authorization");
+        String subject = tokenValidator.validate(authorizationHeader);
+        Token token = (Token) jsonTransformer.fromJson(subject, Token.class);
+        return userDao.getUserByEmail(token.getEmail());
     }
 	
 }
