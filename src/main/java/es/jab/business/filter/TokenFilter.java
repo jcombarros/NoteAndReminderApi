@@ -50,7 +50,7 @@ public class TokenFilter implements Filter {
         
         User user = userDao.getUserByEmail(token.getEmail());
         
-        if(user != null && user.getEmail().equals(token.getEmail())){
+        if(user != null && user.getToken().equals(authorizationHeader)){
         	chain.doFilter(request, response);
         }
         else{    
